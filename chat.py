@@ -12,9 +12,13 @@ pairs = [
         r"my name is (.*)",
         ["Hello %1, How are you today ?",]
     ],
+    [
+        r"(.*) fine, you ?",
+        ["I am good.",]
+    ],
      [
         r"(.*) your name ?",
-        ["My name is Chatty and I'm a chatbot ?",]
+        ["My name is Simba and I'm a chatbot",]
     ],
     [
         r"how are you ?",
@@ -25,7 +29,11 @@ pairs = [
         ["Its alright","Its OK, never mind",]
     ],
     [
-        r"i'm (.*) doing good",
+        r"i (.*) doing good",
+        ["Nice to hear that","Alright :)",]
+    ],
+    [
+        r"(.*) fine",
         ["Nice to hear that","Alright :)",]
     ],
     [
@@ -44,15 +52,35 @@ pairs = [
     ],
     [
         r"(.*) created ?",
-        ["Nagesh created me using Python's NLTK library ","top secret ;)",]
+        ["Asad developed me. He is my boss.","top secret ;)",]
     ],
     [
         r"(.*) (location|city) ?",
-        ['Chennai, Tamil Nadu',]
+        ['Dhaka, Bangladesh',]
+    ],
+    [
+        r"where (.*) live ?",
+        ['Dhaka, Bangladesh',]
+    ],
+    [
+        r"what technology (.*) ?",
+        ['I was developed using nltk chat library and flask.',]
+    ],
+    [
+        r"(.*) (boss|asad) do ?",
+        ['My boss is a data analyst. He is also expert in cyber security analysis.',]
     ],
     [
         r"how is weather in (.*)?",
         ["Weather in %1 is awesome like always","Too hot man here in %1","Too cold man here in %1","Never even heard about %1"]
+    ],
+     [
+        r"(.*) (asad|boss|asad's) experience ?",
+        ["My boss have two years of experience on data science with python, web scraping, flask, php RESTful API and ajax"]
+    ],
+    [
+        r"(.*) (asad|boss|asad's) (education|educational) ?",
+        ["My boss is a computer science graduate from MIST, Bangladesh and pursuing M.Sc. in computer science in MIST."]
     ],
     [
         r"i work in (.*)?",
@@ -105,10 +133,10 @@ def msg():
 			 msg= simba(message)
 			 print msg
 			 if msg==None:
-			 	msg="Sorry I dont know that"
+			 	msg="Sorry, that's beyond my knowledge"
 			 return msg
 	except:
-		return "Sorry I dont know that"
+		return "Sorry, that's beyond my knowledge"
 
 if __name__ == "__main__":
     app.run(debug = True)
