@@ -1,8 +1,9 @@
 # Python standard libraries
 from nltk.chat.util import Chat, reflections
 import json
-import os
+import os, re
 import requests
+from fuzzywuzzy import fuzz
 # Third party libraries
 from flask import Flask, redirect, request, url_for, render_template,send_from_directory
 app = Flask(__name__)
@@ -112,7 +113,61 @@ pairs = [
 ],
 ]
 
+with open('data/dictionary.txt') as f:
+	lines = f.readlines()
 chat = Chat(pairs, reflections)
+
+
+# def weather(msg):
+# 	city=msg.split(',')[0]
+# 	country=msg.split(',')[1]
+# 	apikey="5eHASm1cPxSJvZG01nAWn3fIq4QXCtTs"
+# 	url="http://dataservice.accuweather.com/locations/v1/regions?apikey="+apikey
+# 	regions=json.loads(url.response)
+# 	for region in regions:
+# 		regId=region['ID']
+# 		newurl="http://dataservice.accuweather.com/locations/v1/countries/"+str(regId)+"?apikey="+apikey
+# 		countries=json.loads(newurl.response)
+# 		for count in countries:
+# 			if(country==count):
+# 				countID= count["ID"]
+# 				break
+# 		cityurl="http://dataservice.accuweather.com/locations/v1/cities/"+str(countID)+"/search"
+
+def ans(msg):
+	terms= msg.split(" ")
+	if(terms[len(terms)-1]=="?"):
+		term=terms[len(terms)-2]
+	else:
+		term= terms[len(terms)-1]
+	url="https://www.lexico.com/en/definition/"+str(term)
+	resp=requests.get(url)
+	cont= str(resp.content)
+	print "Before an"
+	an= re.search(r'<span class="ind">(.*?)?</span></p>', str(cont)).group(1)
+	print "AN is: "
+	print an
+	print "Definition is:"+str(an)
+	return str(an)
+
+
+
+def reply(msg):
+	maxm=0
+	repl=""
+	global lines
+	for line in lines:
+		parts=line.split(">>")
+		rat= fuzz.ratio( parts[0], msg)
+		if rat>maxm:
+			maxm=rat
+			repl=parts[1]
+
+
+	return repl
+
+
+
 
 def simba(msg):
     print "here"
@@ -132,8 +187,12 @@ def msg():
 			 message = str(request.form['msg'])
 			 msg= simba(message)
 			 print msg
+			 if "what is" in message or "what's" in message:
+			 	print "here going to ans"
+			 	msg= ans(message)
+
 			 if msg==None:
-			 	msg="Sorry, that's beyond my knowledge"
+			 	msg= reply(message)
 			 return msg
 	except:
 		return "Sorry, that's beyond my knowledge"
