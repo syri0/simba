@@ -1,0 +1,301 @@
+<html>
+<head>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+ <script type="text/javascript">
+  function getmonth(month){
+                      if (month=='1'){
+                    month='Jan';
+                  }else if(month=='2'){
+                    month='Feb'
+                  }else if(month=='3'){
+                    month='Mar'
+                  }else if(month=='4'){
+                    month='Apr'
+                  }else if(month=='5'){
+                    month='May'
+                  }else if(month=='6'){
+                    month='June'
+                  }else if(month=='7'){
+                    month='Jul'
+                  }else if(month=='8'){
+                    month='Aug'
+                  }else if(month=='9'){
+                    month='Sep'
+                  }else if(month=='10'){
+                    month='Oct'
+                  }else if(month=='11'){
+                    month='Nov'
+                  }else if(month=='12'){
+                    month='Dec'
+                  }
+                  return month;
+  }
+//   $('input').keyup(function (e){
+//   // do something
+//   $('#msg').focus()
+// })
+
+document.onkeypress=function(e){
+    //do the required work
+    $('#msg').focus();
+}
+                  $(document).ready(function(){
+
+
+
+                                      var today = new Date();
+                  var date = today.getDate();
+                  var month = getmonth((today.getMonth()+1));
+                  var hr = today.getHours() 
+                  var min= today.getMinutes()
+                    $('#frst').text(hr+':'+min+'    |    '+month+date);
+                    $('#dt1').text(month+' '+date)
+
+$('#msg').keyup(function(e) { 
+                if(e.keyCode == 13) { 
+                  var today = new Date();
+                  var date = today.getDate();
+                  var month = getmonth((today.getMonth()+1));
+                  var hr = today.getHours() 
+                  var min= today.getMinutes()
+
+
+
+                   
+      
+        $("#apphere").append('  <div class="outgoing_msg"> <div class="sent_msg"> <p> '+$("#msg").val()+'</p><span class="time_date"> '+hr+':'+min+'    |    '+month+date+'</span> </div></div>');
+
+        // if ( $("#msg").val().includes('what is')){
+        //    $("#apphere").append(
+        //                     '            <div class="incoming_msg"> <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>  <div class="received_msg">    <div class="received_withd_msg">  <p>Oops, I need to scrape for this question, please wait for a while.</p>   <span class="time_date">'+hr+':'+min+'    |    '+month+date+'</span></div> </div> </div>'
+
+
+
+        //                     );
+        // }
+
+            $.ajax({
+                        type: "POST",
+                        url: "/post",
+                        data: {msg:$("#msg").val()}, 
+              success: function(result){
+                       
+                          //alert(result);
+                                            var today = new Date();
+                  var date = today.getDate();
+                  var month = getmonth((today.getMonth()+1));
+                  var hr = today.getHours() 
+                  var min= today.getMinutes()
+                          $("#apphere").append(
+                            '            <div class="incoming_msg"> <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>  <div class="received_msg">    <div class="received_withd_msg">  <p>'+result+'</p>   <span class="time_date">'+hr+':'+min+'    |    '+month+date+'</span></div> </div> </div>'
+
+
+
+                            );
+                           myscroll = $('#apphere');
+                            myscroll.scrollTop(myscroll.get(0).scrollHeight);
+                            $('#msg').val("");
+          }
+        });
+           
+          
+                } 
+            });         
+
+
+          $("#submsg").click(function(){
+                              var today = new Date();
+                  var date = today.getDate();
+                  var month = getmonth((today.getMonth()+1));
+                  var hr = today.getHours() 
+                  var min= today.getMinutes()
+        $("#apphere").append('  <div class="outgoing_msg"> <div class="sent_msg"> <p> '+$("#msg").val()+'</p><span class="time_date"> '+hr+':'+min+'    |    '+month+date+'</span> </div></div>');
+
+            $.ajax({
+                        type: "POST",
+                        url: "/post",
+                        data: {msg:$("#msg").val()}, 
+              success: function(result){
+                                         var today = new Date();
+                  var date = today.getDate();
+                  var month = getmonth((today.getMonth()+1));
+                  var hr = today.getHours() 
+                  var min= today.getMinutes()
+                          //alert(result);
+                          $("#apphere").append(
+                            '            <div class="incoming_msg"> <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>  <div class="received_msg">    <div class="received_withd_msg">  <p>'+result+'</p>   <span class="time_date">'+hr+':'+min+'    |    '+month+date+'</span></div> </div> </div>'
+
+
+
+                            );
+                           myscroll = $('#apphere');
+                            myscroll.scrollTop(myscroll.get(0).scrollHeight);
+                            $('#msg').val("");
+          }
+        });
+           
+          }     );
+        });
+        </script>
+
+</head>
+<body>
+<div class="container">
+<h3 class=" text-center">Simba Chatbot</h3>
+<div class="messaging">
+      <div class="inbox_msg">
+        <div class="inbox_people">
+          <div class="headind_srch">
+            <div class="recent_heading">
+              <h4>Recent</h4>
+            </div>
+            <!-- <div class="srch_bar">
+              <div class="stylish-input-group">
+                <input type="text" class="search-bar"  placeholder="Search" >
+                <span class="input-group-addon">
+                <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                </span> </div>
+            </div> -->
+          </div>
+          <div class="inbox_chat">
+            <div class="chat_list active_chat">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Simba <span id='dt1' class="chat_date">Dec 25</span></h5>
+                  <p>Hi, I'm Simba and I chat alot.</p>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="chat_list">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions 
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div>
+            <div class="chat_list">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions 
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div>
+            <div class="chat_list">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions 
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div>
+            <div class="chat_list">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions 
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div>
+            <div class="chat_list">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions 
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div> 
+            <div class="chat_list">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions 
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div>-->
+
+          </div>
+        </div>
+        <div  class="mesgs">
+          <div id='apphere' class="msg_history">
+            <div class="incoming_msg">
+              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+              <div class="received_msg">
+                <div class="received_withd_msg">
+                  <p>Hi, I'm Simba and I chat alot.</p><script type="text/javascript">
+                                      var today = new Date();
+                  var date = today.getDate();
+                  var month = getmonth((today.getMonth()+1));
+                  var hr = today.getHours() 
+                  var min= today.getMinutes()
+                  </script>
+                  <span id='frst' class="time_date"> 11:01 AM    |    June 9</span></div>
+              </div>
+            </div>
+<!--             <div class="outgoing_msg">
+              <div class="sent_msg">
+                <p>Test which is a new approach to have all
+                  solutions</p>
+                <span class="time_date"> 11:01 AM    |    June 9</span> </div>
+            </div>
+            <div class="incoming_msg">
+              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+              <div class="received_msg">
+                <div class="received_withd_msg">
+                  <p>Test, which is a new approach to have</p>
+                  <span class="time_date"> 11:01 AM    |    Yesterday</span></div>
+              </div>
+            </div>
+            <div class="outgoing_msg">
+              <div class="sent_msg">
+                <p>Apollo University, Delhi, India Test</p>
+                <span class="time_date"> 11:01 AM    |    Today</span> </div>
+            </div>
+            <div class="incoming_msg">
+              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+              <div class="received_msg">
+                <div class="received_withd_msg">
+                  <p>We work directly with our designers and suppliers,
+                    and sell direct to you, which means quality, exclusive
+                    products, at a price anyone can afford.</p>
+                  <span class="time_date"> 11:01 AM    |    Today</span></div>
+              </div>
+            </div> -->
+
+
+
+          </div>
+          <div class="type_msg">
+            <div class="input_msg_write">
+              <input id='msg' type="text" class="write_msg" placeholder="Type a message" />
+              <button id='submsg' class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <p class="text-center top_spac"> Developed by <!-- <a target="_blank" href=""> -->Asaduzzaman</a></p>
+      
+    </div></div>
+    </body>
+    </html>
