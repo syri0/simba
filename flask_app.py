@@ -113,7 +113,7 @@ pairs = [
 ],
 ]
 
-with open('data/dictionary.txt') as f:
+with open('F:\Personal-site\simba\data\dictionary.txt') as f:
 	lines = f.readlines()
 f.close()
 chat = Chat(pairs, reflections)
@@ -135,21 +135,30 @@ chat = Chat(pairs, reflections)
 # 				break
 # 		cityurl="http://dataservice.accuweather.com/locations/v1/cities/"+str(countID)+"/search"
 
+def casemaker(msg):
+    return msg.lower()
+
+
 def ans(msg):
-	terms= msg.split(" ")
-	if(terms[len(terms)-1]=="?"):
-		term=terms[len(terms)-2]
-	else:
-		term= terms[len(terms)-1]
-	url="https://www.lexico.com/en/definition/"+str(term)
-	resp=requests.get(url)
-	cont= str(resp.content)
-	print "Before an"
-	an= re.search(r'<span class="ind">(.*?)?</span></p>', str(cont)).group(1)
-	print "AN is: "
-	print an
-	print "Definition is:"+str(an)
-	return str(an)
+    if ("what is" in msg ):
+        msg=msg.replace("what is ","")
+    elif("what's" in msg):
+        msg= msg.replace("what's","")
+    msg=msg.replace("?","")
+    msg=msg.replace(" ","+")
+	# terms= msg.split(" ")
+	# if(terms[len(terms)-1]=="?"):
+	# 	term=terms[len(terms)-2]
+	# else:
+	# 	term= terms[len(terms)-1]
+    term=msg
+    print "search term"+str(term)
+    url="https://www.lexico.com/en/definition/"+str(term)
+    resp=requests.get(url)
+    cont= str(resp.content)
+    print "Before an"
+    an= re.search(r'<span class="ind">(.*?)?</span></p>', str(cont)).group(1)
+    return str(an)
 
 
 
@@ -168,6 +177,34 @@ def reply(msg):
 	return repl
 
 
+def wiki(msg):
+    typo=0
+    if ("what is the" in msg ):
+        typo=1
+        msg=msg.replace("what is ","")
+    elif("what's the" in msg):
+        typo=2
+        msg= msg.replace("what's ","")
+    elif("who's" in msg):
+        typo=3
+        msg= msg.replace("who's ","")
+    elif("who is" in msg):
+        typo=4
+        msg= msg.replace("who is ","")  
+
+    msg=msg.replace("?","")
+    msg= msg.strip()
+    msg= " ".join(msg.split())
+    words = msg.split(' ')
+    whitelist = {'and', 'the', 'is', 'of'}
+    capitalized = ' '.join([word.title() if word not in whitelist else word for word in words])
+    capitalized=capitalized.replace(" ","_")
+    print "link of capitalized"
+    print capitalized
+    wiki_url= "https://en.wikipedia.org/wiki/"+capitalized
+    resp= requests.get(url)
+    content= resp.content
+
 
 
 def simba(msg):
@@ -185,12 +222,16 @@ def msg():
 	try:
 		message="null"
 		if request.method == 'POST':
-			 message = str(request.form['msg'])
-			 msg= simba(message)
-			 print msg
-			 if "what is" in message or "what's" in message:
+			 messagemix = str(request.form['msg'])
+			 message=casemaker(messagemix)
+			 msg=simba(message)
+			 if ("what is" in message or "what's" in message) and (("your" not in message) and ("is the" not in message)):
 			 	print "here going to ans"
 			 	msg= ans(message)
+             # elif("who is" in message or "who's" in message or "what is the" in message or "what's the" in message) and (("your" not in message)):
+             #    print "wiki is going on"
+             #    msg=wiki(message)
+
 
 			 if msg==None:
 			 	msg= reply(message)

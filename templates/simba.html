@@ -83,6 +83,12 @@ $('#msg').keyup(function(e) {
                         type: "POST",
                         url: "/post",
                         data: {msg:$("#msg").val()}, 
+                        
+                        beforeSend: function() {
+              myscroll = $('#apphere');
+                            myscroll.scrollTop(myscroll.get(0).scrollHeight);
+                            $('#msg').val("");
+           },
               success: function(result){
                        
                           //alert(result);
@@ -120,6 +126,11 @@ $('#msg').keyup(function(e) {
                         type: "POST",
                         url: "/post",
                         data: {msg:$("#msg").val()}, 
+                        beforeSend: function() {
+              myscroll = $('#apphere');
+                            myscroll.scrollTop(myscroll.get(0).scrollHeight);
+                            $('#msg').val("");
+           },
               success: function(result){
                                          var today = new Date();
                   var date = today.getDate();
@@ -133,9 +144,7 @@ $('#msg').keyup(function(e) {
 
 
                             );
-                           myscroll = $('#apphere');
-                            myscroll.scrollTop(myscroll.get(0).scrollHeight);
-                            $('#msg').val("");
+                           
           }
         });
            
