@@ -7,6 +7,13 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
  <script type="text/javascript">
+
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+  $('#inbox').is(":hidden");
+ // some code..
+}
+
+
   function getmonth(month){
                       if (month=='1'){
                     month='Jan';
@@ -157,7 +164,7 @@ $('#msg').keyup(function(e) {
 <div class="container">
 <h3 class=" text-center">Simba Chatbot</h3>
 <div class="messaging">
-      <div class="inbox_msg">
+      <div id="inbox" class="inbox_msg">
         <div class="inbox_people">
           <div class="headind_srch">
             <div class="recent_heading">
@@ -303,8 +310,8 @@ $('#msg').keyup(function(e) {
       </div>
       
       
-      <p class="text-center top_spac"> Developed by <!-- <a target="_blank" href=""> -->Asaduzzaman</a></p>
-      
+ <!--      <p class="text-center top_spac"> Developed by <a target="_blank" href="">Asaduzzaman</a></p>
+       -->
     </div></div>
     </body>
     </html>
